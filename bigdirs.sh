@@ -16,7 +16,6 @@
 #- IMPLEMENTATION
 #-    version         bigdirs (https://github.com/miguelmota/bigdirs) 0.0.1
 #-    author          Miguel Mota https://miguelmota.com
-#-    copyright       Copyright (c) https://github.com/miguelmota/bigdirs/LICENSE.md
 #-    license         MIT License
 #-
 #================================================================
