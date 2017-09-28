@@ -4,13 +4,16 @@
 # HEADER
 #================================================================
 #% SYNOPSIS
-#+    bigdirs {path}
+#+    bigdirs [flags] {path}
 #%
 #% DESCRIPTION
-#%    Scan for big directories.
+#%    Scan for big directories (>1G).
 #%
 #% EXAMPLES
 #%    bigdirs ~/
+#%    bigdirs -e ~/
+#%    bigdirs -v ~/
+#%    bigdirs -v -e ~/
 #%
 #================================================================
 #- IMPLEMENTATION
@@ -33,43 +36,82 @@ white='\033[37m'
 bold=$(tput bold)
 normal=$(tput sgr0)
 
-SCAN_PATH="$1"
+SCAN_PATH=""
+VERBOSE="false"
+EXHAUSTIVE="false"
 
-if [ -z $1 ]; then
-  SCAN_PATH="$HOME"
+while getopts 'ev' flag; do
+  case "${flag}" in
+    e) EXHAUSTIVE='true' ;;
+    v) VERBOSE='true' ;;
+    *) echo "Unexpected option ${flag}"; exit 1 ;;
+  esac
+done
+
+for arg in "$@"
+do
+  # if arg doesn't contain leading dash,
+  # then it's not a flag
+  if ! [[ "$arg" =~ ^-.*$ ]]; then
+    SCAN_PATH="${arg}"
+  fi
+done
+
+if [ "$SCAN_PATH" == "" ]; then
+  echo "Path required"
+  exit 1
 fi
 
+# results array
+resultsSize=()
+resultsPath=()
+
 function scan() {
+  # pathname argument
   local DIR="$1"
 
-  # turn off expansion
-  set -f
+  if ! [ "$EXHAUSTIVE" == "true" ]; then
+    # turn off expansion
+    set -f
+  fi
 
-  # if doesn't end with an asterisk
-  if ! [[ $DIR =~ ^.*\*$ ]]; then
+  # if doesn't end with an asterisk and is directory
+  if ! [[ $DIR =~ ^.*\*$ ]] && [[ -d $DIR ]]; then
 
-    printf "Scanning %s\n" "$DIR"
+    if [ "$VERBOSE" == "true" ]; then
+      printf "Scanning %s\n" "$DIR"
+    fi
 
     # perform directory size scan
-    /usr/bin/du -sh -- "$DIR" | /usr/bin/sort -n | grep 'G\s' | while read LINE; do
+    while read LINE; do
       SIZE="$(echo "$LINE" | grep -oE '.*G')"
       CUR_PATH="$(echo "$LINE" | grep -oE '\s.*' | sed -e 's/^[[:space:]]*//')"
-      printf "$green$bold%s$normal $green%s$nc\n" "$SIZE" "$CUR_PATH"
-      if [[ -d $CUR_PATH ]]; then
-        scan_root "$CUR_PATH"
-      fi
-    done
 
-    # turn on expansion
-    set +f
+      resultsSize+=("${SIZE}")
+      resultsPath+=("${CUR_PATH}")
+
+      if [ "$VERBOSE" == "true" ]; then
+        printf "$bold$yellow%s %s$normal $yellow%s$nc\n" "Found" "$SIZE" "$CUR_PATH"
+      fi
+
+      if [[ -d $CUR_PATH ]]; then
+        scan_top "$CUR_PATH"
+      fi
+
+    # need to pass command like this
+    # to modify results var inside while loop
+    done < <(/usr/bin/du -sh -- "$DIR" | /usr/bin/sort -n | grep 'G\s')
+
+    if ! [ "$EXHAUSTIVE" == "true" ]; then
+      # turn on expansion
+      set +f
+    fi
   fi
 }
 
-function scan_root() {
+function scan_top() {
   # realpath is to remove last slash
   local CUR_PATH=$(realpath "$1")
-
-  printf "\n"
 
   # list directories
   for DIR in "$CUR_PATH"/*; do
@@ -79,10 +121,23 @@ function scan_root() {
 }
 
 # start message
-printf "$yellow%s$nc\n" "Starting..."
+printf "$yellow%s$nc\n" "Running..."
 
 # start scan
-scan_root "$SCAN_PATH"
+scan_top "$SCAN_PATH"
+
+printf "\n%s\n" "----------------------------"
+printf "%s\n" "BIG DIRS"
+printf "%s\n" "----------------------------"
+printf "Size\tPath\n"
+
+i=0
+for line in "${resultsPath[@]}"; do
+  printf "$green$bold%s$normal\t$green%s$nc\n" "${resultsSize[$i]}" "${resultsPath[$i]}"
+  (( i++ ))
+done
+
+printf "\n%s\n" "----------------------------"
 
 # complete
-printf "\n$green%s$nc" "Done."
+printf "\n$green%s$nc\n" "Done."

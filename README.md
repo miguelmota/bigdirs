@@ -1,6 +1,6 @@
 # bigdirs
 
-> Bash script to find big directories.
+> Bash script to find big directories (>1G).
 
 # Install
 
@@ -13,16 +13,40 @@ mv bigdirs.sh /usr/local/bin/bigdirs
 # Usage
 
 ```bash
-$ bigdirs {path}
+$ bigdirs [flags] {path}
 ```
 
 # Example
+
+Standard example
 
 ```bash
 $ bigdirs ~/
 ```
 
 <img src="./screenshot.gif" width="340" />
+
+Verbose example
+
+```bash
+$ bigdirs -v ~/
+```
+
+<img src="./screenshot_verbose.gif" width="340" />
+
+Exhaustive example
+
+```bash
+$ bigdirs -v -e ~/
+```
+
+<img src="./screenshot_exhaustive.gif" width="340" />
+
+# FAQ
+
+- Q: I'm getting a `Permission denied` error!
+
+  - A: Try running as root user with `sudo` to scan permission restricted directories.
 
 # License
 
