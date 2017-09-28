@@ -36,7 +36,7 @@ $ bigdirs -v ~/
 
 <img src="./screenshot_verbose.gif" width="340" />
 
-Exhaustive example
+Verbose and exhaustive example (shows all big directories recursively)
 
 ```bash
 $ bigdirs -v -e ~/
