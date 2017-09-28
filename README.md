@@ -2,6 +2,8 @@
 
 > Bash script to find big directories (>1G).
 
+<img src="./screenshot.png" width="340" />
+
 # Install
 
 ```bash
