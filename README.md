@@ -26,7 +26,7 @@ Standard example
 $ bigdirs ~/
 ```
 
-<img src="./screenshot.gif" width="340" />
+<img src="./screenshot_standard.gif" width="340" />
 
 Verbose example
 
