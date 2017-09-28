@@ -1,5 +1,28 @@
 #!/bin/bash
 
+#================================================================
+# HEADER
+#================================================================
+#% SYNOPSIS
+#+    bigdirs {path}
+#%
+#% DESCRIPTION
+#%    Scan for big directories.
+#%
+#% EXAMPLES
+#%    bigdirs ~/
+#%
+#================================================================
+#- IMPLEMENTATION
+#-    version         bigdirs (https://github.com/miguelmota/bigdirs) 0.0.1
+#-    author          Miguel Mota https://miguelmota.com
+#-    copyright       Copyright (c) https://github.com/miguelmota/bigdirs/LICENSE.md
+#-    license         MIT License
+#-
+#================================================================
+# END_OF_HEADER
+#================================================================
+
 nc='\033[0m'
 red="\033[31m"
 green='\033[32m'

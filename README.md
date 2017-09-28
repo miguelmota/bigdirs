@@ -1,6 +1,6 @@
 # bigdirs
 
-> Bash script to find big directories
+> Bash script to find big directories.
 
 # Install
 
