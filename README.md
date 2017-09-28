@@ -5,7 +5,8 @@
 # Install
 
 ```bash
-wget
+wget https://raw.githubusercontent.com/miguelmota/bigdirs/master/bigdirs.sh
+
 mv bigdirs.sh /usr/local/bin/bigdirs
 ```
 
