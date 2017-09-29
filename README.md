@@ -1,6 +1,6 @@
 # bigdirs
 
-> Bash script to find big directories (>1G).
+> Bash script to find big directories (>1GB).
 
 <img src="./screenshot.png" width="340" />
 

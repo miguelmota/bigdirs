@@ -7,7 +7,7 @@
 #+    bigdirs [flags] {path}
 #%
 #% DESCRIPTION
-#%    Scan for big directories (>1G).
+#%    Scan for big directories (>1GB).
 #%
 #% EXAMPLES
 #%    bigdirs ~/
