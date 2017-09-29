@@ -68,7 +68,7 @@ resultsPath=()
 
 function scan() {
   # pathname argument
-  local DIR="$1"
+  local DIR=$(realpath $1)
 
   if ! [ "$EXHAUSTIVE" == "true" ]; then
     # turn off expansion
