@@ -40,6 +40,7 @@ SCAN_PATH=""
 VERBOSE="false"
 EXHAUSTIVE="false"
 
+# flags
 while getopts 'ev' flag; do
   case "${flag}" in
     e) EXHAUSTIVE='true' ;;
@@ -57,8 +58,9 @@ do
   fi
 done
 
+# If no path is passed, show error with example
 if [ "$SCAN_PATH" == "" ]; then
-  echo "Path required"
+  printf "%s\n\n%s" "Path required." "Example: bigdirs ~/"
   exit 1
 fi
 
@@ -78,6 +80,7 @@ function scan() {
   # if doesn't end with an asterisk and is directory
   if ! [[ $DIR =~ ^.*\*$ ]] && [[ -d $DIR ]]; then
 
+    # show current scan directory if verbose
     if [ "$VERBOSE" == "true" ]; then
       printf "Scanning %s\n" "$DIR"
     fi
@@ -87,13 +90,16 @@ function scan() {
       SIZE="$(echo "$LINE" | grep -oE '.*G')"
       CUR_PATH="$(echo "$LINE" | grep -oE '\s.*' | sed -e 's/^[[:space:]]*//')"
 
+      # add to results array
       resultsSize+=("${SIZE}")
       resultsPath+=("${CUR_PATH}")
 
+      # show current scan directory result if verbose
       if [ "$VERBOSE" == "true" ]; then
         printf "$bold$yellow%s %s$normal $yellow%s$nc\n" "Found" "$SIZE" "$CUR_PATH"
       fi
 
+      # start a new scan on new path
       if [[ -d $CUR_PATH ]]; then
         scan_top "$CUR_PATH"
       fi
@@ -126,18 +132,21 @@ printf "$yellow%s$nc\n" "Running..."
 # start scan
 scan_top "$SCAN_PATH"
 
+# show a table with results
 printf "\n%s\n" "----------------------------"
 printf "%s\n" "BIG DIRS"
 printf "%s\n" "----------------------------"
 printf "Size\tPath\n"
 
+# iterate over results array
 i=0
 for line in "${resultsPath[@]}"; do
   printf "$green$bold%s$normal\t$green%s$nc\n" "${resultsSize[$i]}" "${resultsPath[$i]}"
   (( i++ ))
 done
 
+# end of table
 printf "\n%s\n" "----------------------------"
 
-# complete
+# shoe complete message
 printf "\n$green%s$nc\n" "Done."
