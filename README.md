@@ -6,7 +6,8 @@
 
 ## Dependencies
 
-- `realpath`
+- realpath
+
   - Ubuntu
     ```
     apt-get install realpath
@@ -56,7 +57,7 @@ $ bigdirs -v -e ~/
 
 <img src="./assets/screenshot_exhaustive.gif" width="340" />
 
-# FAQ
+## FAQ
 
 - Q: I'm getting a `Permission denied` error!
 
