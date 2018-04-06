@@ -126,6 +126,12 @@ function scan_top() {
   done
 }
 
+# check that realpath command exists
+if ! type "realpath" > /dev/null; then
+  printf "$red%s$normal$nc\n" "\"realpath\" command is required"
+  exit 1
+fi
+
 # start message
 printf "$yellow%s$nc\n" "Running..."
 

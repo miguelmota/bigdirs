@@ -2,23 +2,35 @@
 
 > Bash script to find big directories (>1GB).
 
-<img src="./screenshot.png" width="340" />
+<img src="./assets/screenshot.png" width="340" />
 
-# Install
+## Dependencies
+
+- `realpath`
+  - Ubuntu
+    ```
+    apt-get install realpath
+    ```
+  - macOS
+    ```
+    brew install coreutils
+    ```
+
+## Install
 
 ```bash
 wget https://raw.githubusercontent.com/miguelmota/bigdirs/master/bigdirs.sh
 chmod +x bigdirs.sh
-mv bigdirs.sh /usr/local/bin/bigdirs
+sudo mv bigdirs.sh /usr/local/bin/bigdirs
 ```
 
-# Usage
+## Usage
 
 ```bash
 $ bigdirs [flags] {path}
 ```
 
-# Example
+## Example
 
 Standard example
 
@@ -26,7 +38,7 @@ Standard example
 $ bigdirs ~/
 ```
 
-<img src="./screenshot_standard.gif" width="340" />
+<img src="./assets/screenshot_standard.gif" width="340" />
 
 Verbose example
 
@@ -34,7 +46,7 @@ Verbose example
 $ bigdirs -v ~/
 ```
 
-<img src="./screenshot_verbose.gif" width="340" />
+<img src="./assets/screenshot_verbose.gif" width="340" />
 
 Verbose and exhaustive example (shows all big directories recursively)
 
@@ -42,7 +54,7 @@ Verbose and exhaustive example (shows all big directories recursively)
 $ bigdirs -v -e ~/
 ```
 
-<img src="./screenshot_exhaustive.gif" width="340" />
+<img src="./assets/screenshot_exhaustive.gif" width="340" />
 
 # FAQ
 
@@ -50,6 +62,6 @@ $ bigdirs -v -e ~/
 
   - A: Try running as root user with `sudo` to scan permission restricted directories.
 
-# License
+## License
 
 MIT
